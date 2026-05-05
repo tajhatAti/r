@@ -1,0 +1,15 @@
+{
+  "name": "Smart Agriculture Portal",
+  "short_name": "SASP Routine",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "description": "Class routine, assignments & live focus mode",
+  "lang": "bn",
+  "icons": [
+    { "src": "https://api.iconify.design/lucide/sprout.svg?color=%2300d4ff&width=192&height=192", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "https://api.iconify.design/lucide/sprout.svg?color=%2300d4ff&width=512&height=512", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
