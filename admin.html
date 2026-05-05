@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Smart Agriculture Portal</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+  </div>
+
+  <main class="container admin-container">
+    <header class="glass admin-hero">
+      <div>
+        <p class="hero-eyebrow">⚙️ ADMIN PANEL</p>
+        <h1 class="hero-title"><span class="aurora">Cloud</span> Control Center</h1>
+        <p class="hero-status bn" id="adminStatus">লোড হচ্ছে…</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+        <a href="index.html" class="btn ghost">← মূল পেজ</a>
+        <button id="logoutBtn" class="btn ghost" hidden>লগআউট</button>
+      </div>
+    </header>
+
+    <!-- LOGIN -->
+    <section class="glass" id="loginCard">
+      <h3 style="margin-bottom:14px;">🔒 অ্যাডমিন লগইন</h3>
+      <form id="loginForm" class="add-form">
+        <input id="email" type="email" placeholder="ইমেইল" autocomplete="email" required />
+        <input id="password" type="password" placeholder="পাসওয়ার্ড" autocomplete="current-password" required />
+        <div class="form-row">
+          <button type="submit" class="btn primary">লগইন</button>
+          <button type="button" class="btn ghost" id="signupBtn">সাইনআপ</button>
+        </div>
+        <p id="authError" class="bn" style="color:hsl(0 84% 70%);font-size:13px;display:none;"></p>
+      </form>
+      <p class="bn" style="color:var(--muted);font-size:12px;margin-top:14px;">
+        💡 প্রথমবার <b>সাইনআপ</b> করুন — তারপর Lovable Cloud → Database → <code>user_roles</code> টেবিলে আপনার <code>user_id</code> ও <code>role='admin'</code> যোগ করুন।
+      </p>
+    </section>
+
+    <!-- ADMIN PANEL -->
+    <section id="adminPanel" hidden>
+      <!-- STATS -->
+      <article class="glass" style="margin-bottom:24px;">
+        <h3 style="margin-bottom:14px;">📊 লাইভ পরিসংখ্যান</h3>
+        <div class="admin-stats">
+          <div class="stat-box"><div class="stat-num-big" id="aLive">—</div><div class="bn">লাইভ ভিজিটর</div></div>
+          <div class="stat-box"><div class="stat-num-big" id="aToday">—</div><div class="bn">আজকের ভিউ</div></div>
+          <div class="stat-box"><div class="stat-num-big" id="aTotal">—</div><div class="bn">মোট ভিউ</div></div>
+        </div>
+      </article>
+
+      <!-- ANNOUNCEMENT BANNER -->
+      <article class="glass" style="margin-bottom:24px;">
+        <h3 style="margin-bottom:14px;">📌 পিন্ড ব্যানার</h3>
+        <form id="annForm" class="add-form" style="margin-bottom:0;">
+          <input id="annMsg" placeholder="ব্যানারে যা দেখাবে (যেমন: কাল কুইজ আছে)" />
+          <div class="form-row">
+            <button type="submit" class="btn primary">পোস্ট করুন</button>
+            <button type="button" class="btn ghost" id="annClear">মুছে ফেলুন</button>
+          </div>
+        </form>
+        <p class="bn" id="annCurrent" style="color:var(--muted);font-size:13px;margin-top:10px;"></p>
+      </article>
+
+      <!-- NOTIFICATION BROADCAST -->
+      <article class="glass" style="margin-bottom:24px;">
+        <h3 style="margin-bottom:14px;">📢 সবাইকে নোটিফিকেশন পাঠান (Popup)</h3>
+        <form id="notifForm" class="add-form" style="margin-bottom:0;">
+          <input id="nTitle" placeholder="শিরোনাম (যেমন: জরুরি বার্তা)" />
+          <textarea id="nMessage" placeholder="বার্তা" rows="3" required style="grid-column:1/-1;width:100%;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--fg);font-family:inherit;"></textarea>
+          <select id="nType">
+            <option value="info">ℹ️ Info</option>
+            <option value="success">✅ Success</option>
+            <option value="warning">⚠️ Warning</option>
+            <option value="alert">🚨 Alert</option>
+          </select>
+          <input id="nExpire" type="datetime-local" title="কখন পর্যন্ত দেখাবে (ঐচ্ছিক)" />
+          <div class="form-row">
+            <button type="submit" class="btn primary">পাঠান</button>
+          </div>
+        </form>
+        <p class="bn" style="color:var(--muted);font-size:12px;margin-top:10px;">
+          সব ব্যবহারকারী রিয়েল-টাইমে পপআপ দেখবে।
+        </p>
+      </article>
+
+      <!-- ADD ASSIGNMENT -->
+      <article class="glass" style="margin-bottom:24px;">
+        <h3 style="margin-bottom:14px;">➕ অ্যাসাইনমেন্ট যোগ করুন</h3>
+        <form id="addForm" class="add-form" style="margin-bottom:0;">
+          <input id="aTitle" placeholder="শিরোনাম" required />
+          <input id="aSubject" placeholder="বিষয়" required />
+          <input id="aDue" type="date" required />
+          <div class="form-row">
+            <button type="submit" class="btn primary">যোগ করুন</button>
+          </div>
+        </form>
+      </article>
+
+      <!-- LIST -->
+      <article class="glass">
+        <div class="assign-head">
+          <h3>📋 অ্যাসাইনমেন্ট সমূহ (<span id="count">0</span>)</h3>
+          <button class="btn ghost" id="loadBtn" style="flex:0 0 auto;">↻ রিলোড</button>
+        </div>
+        <ul id="adminList" class="assign-list"></ul>
+      </article>
+    </section>
+
+    <footer class="foot">Admin Panel · 🔒 Lovable Cloud secured</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js" defer></script>
+</body>
+</html>
