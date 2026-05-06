@@ -6,6 +6,7 @@
   <title>Smart Agriculture Student Portal — Command Center</title>
   <meta name="description" content="Real-time command center for 2nd semester agriculture students: live class tracking, assignments, GPA tools, and weekly schedule." />
   <meta name="theme-color" content="#070b14" />
+  
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="https://api.iconify.design/lucide/sprout.svg?color=%2300d4ff&width=192&height=192" />
 
@@ -22,7 +23,6 @@
     <span class="orb orb-3"></span>
   </div>
 
-  <!-- Pinned announcement banner (admin-controlled) -->
   <div id="announcementBar" class="announcement-bar" hidden>
     <span class="announcement-icon">📌</span>
     <span class="announcement-text bn" id="announcementText"></span>
@@ -47,7 +47,6 @@
       </div>
     </header>
 
-    <!-- 📊 Live stats strip -->
     <section class="stats-strip">
       <div class="stat-pill">
         <span class="stat-dot live"></span>
@@ -133,7 +132,6 @@
     </footer>
   </main>
 
-  <!-- 🔔 Notification popup (admin broadcast) -->
   <div class="notify-overlay" id="notifyOverlay" hidden>
     <div class="glass notify-card">
       <div class="notify-head">
@@ -161,8 +159,46 @@
     </div>
   </div>
 
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker Registered'))
+          .catch(err => console.log('SW Registration Failed', err));
+      });
+    }
+
+    // Install Button Functionality
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.hidden = false;
+
+      installBtn.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('App Installed');
+          }
+          installBtn.hidden = true;
+          deferredPrompt = null;
+        });
+      });
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installBtn.hidden = true;
+      console.log('PWA Installed successfully');
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase-config.js"></script>
   <script src="script.js" defer></script>
 </body>
-</html>
+            </html>
+  
